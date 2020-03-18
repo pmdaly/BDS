@@ -1,19 +1,23 @@
 import pandas as pd
+import supereeg as se
+from seeg import SEEGBase
 
 
-class Population:
+class Population(SEEGBase):
 
     def __init__(self, patients):
         self.patients = patients
 
     def merge_elecs(self):
-        all_locs = pd.concat([pt.brain_object.locs for pt in self.patients])
-
-    def load_patient_data(self):
+        locs = list()
         for patient in self.patients:
-            patient.load_data()
+            for bo in patient.brain_objects:
+                locs.append(bo.locs)
+        self.locs = pd.concat(locs)
 
+    def set_patient_models(self):
+        for patient in self.patients:
+            patient.build_model(self.locs)
 
-    def expand_patients(self):
-        pass
-
+    def build_full_model(self):
+        self.model = se.Model([pt.model for pt in self.patients])
