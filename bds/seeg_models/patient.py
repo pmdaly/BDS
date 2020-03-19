@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import supereeg as se
-from seeg import SEEGBase, random_brain_object
+from .seeg import SEEGBase, random_brain_object
 
 
 class Patient(SEEGBase):
@@ -24,13 +24,3 @@ class Patient(SEEGBase):
             model = se.Model(self.brain_objects)
         model.n_subs = 1
         self.model = model
-
-
-
-if __name__ == '__main__':
-    from population import Population
-    patients = [Patient() for _ in range(5)]
-    population = Population(patients)
-    population.merge_elecs()
-    population.set_patient_models()
-    population.build_full_model()

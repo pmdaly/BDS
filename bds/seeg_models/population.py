@@ -1,7 +1,6 @@
 import pandas as pd
 import supereeg as se
-from seeg import SEEGBase
-
+from .seeg import SEEGBase
 
 class Population(SEEGBase):
 
@@ -21,3 +20,6 @@ class Population(SEEGBase):
 
     def build_full_model(self):
         self.model = se.Model([pt.model for pt in self.patients])
+
+    def __getitem__(self, idx):
+        return self.patients[idx]
