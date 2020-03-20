@@ -1,3 +1,3 @@
 from .estimation import Estimator
 
-__all__ == ['Estimator']
+__all__ = ['Estimator']
