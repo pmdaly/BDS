@@ -7,10 +7,6 @@ class Estimator:
 
     def estimate(self, patient):
         results = list()
-        for bo in patient.brain_objects:
-            #results.append(Results(bo, self.model.predict(bo)))
-            results.append(self.model.predict(bo))
+        for brain_object in patient:
+            results.append(self.model.predict(brain_object))
         return results
-
-
-#Results = namedtuple('Results', ['brain_object', 'ful'])
