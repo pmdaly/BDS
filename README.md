@@ -2,10 +2,10 @@
 Code for [Biomarkers of Depression Symptoms Defined by Direct Intracranial Neurophysiology][1](preprint)
 
 # TODO:
-1. Create dummy data
-2. Seeg Models
-3. Signal Estimation
-4. Signal Processing
+1. Create dummy data :heavy_check_mark:
+2. Seeg Models :heavy_check_mark:
+3. Signal Estimation :heavy_check_mark:
+4. Signal Processing :heavy_check_mark:
 5. Community Detection
 6. Clustering
 7. Classification

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import supereeg as se
@@ -12,6 +13,7 @@ class Patient(SEEGBase):
         self.pid = pid
         self.brain_object_files = brain_object_files
         self._load_brain_objects()
+        self.elec_names = self[0].get_data().columns.values
         if pid is None:
             Patient.patient_num += 1
             self.pid = f'pid{self.patient_num}'
@@ -25,11 +27,29 @@ class Patient(SEEGBase):
 
     def build_model(self, population_elecs=None):
         if population_elecs is not None:
-            model = se.Model(self.brain_objects, locs=population_elecs)
+            expanded_model = se.Model(self.brain_objects, locs=population_elecs)
+            expanded_model.n_subs = 1
+            self.expanded_model = expanded_model
         else:
             model = se.Model(self.brain_objects)
-        model.n_subs = 1
-        self.model = model
+            model.n_subs = 1
+            self.model = model
+
+    def predict_bos(self, bos=None):
+        if bos:
+            return [self.expanded_model.predict(bo) for bo in bos]
+        else:
+            return [self.expanded_model.predict(bo) for bo in self]
+
+    def save_model(self, outdir='./', expanded=False, overwrite=False):
+        if expanded:
+            fn = f'{outdir}/{self.pid}_expanded.mo'
+            if os.path.isfile(fn) and not overwrite: return
+            self.expanded_model.save(fn)
+        else:
+            fn = f'{outdir}/{self.pid}.mo'
+            if os.path.isfile(fn) and not overwrite: return
+            self.model.save(fn)
 
     def __getitem__(self, idx):
         return self.brain_objects[idx]

@@ -1,19 +1,28 @@
+import pandas as pd
 import numpy as np
 import pywt
 from pathos.multiprocessing import Pool
 
 
-def get_wavelets(df, fs, n_jobs=20):
-    try:
-        signals = df.values
-    except AttributeError:
-        signals = df
+def get_wavelets(bo, fs, n_jobs=20):
+    bands = ['delta', 'theta', 'alpha', 'beta', 'gammaL', 'gammaH']
+    signals = bo.get_data().values
+    elec_names = [str(i) for i in bo.get_locs().index.values]
     num_signals = signals.shape[1]
     power_envs = None
     with Pool(n_jobs) as p:
         pool_items = ({'elec': signals[:, elec], 'fs': fs} for elec in range(num_signals))
         power_envs = np.array(list(p.imap(_process_elec, pool_items)))
-    return power_envs
+    relative = power_envs.copy()
+    for elec in range(relative.shape[0]):
+        relative[elec, :, :] /= relative[elec, :, :].sum(axis=1, keepdims=True)
+    rf = pd.DataFrame(relative.mean(axis=1), columns=bands, index=elec_names)
+    rf = rf.unstack().to_frame().T
+    rf.columns = rf.columns.map('_'.join)
+    af  = pd.DataFrame(power_envs.copy().mean(axis=1), columns=bands, index=elec_names)
+    af = af.unstack().to_frame().T
+    af.columns = af.columns.map('_'.join)
+    return rf, af
 
 
 def _process_elec(args):

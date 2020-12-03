@@ -12,10 +12,10 @@ class SEEGBase:
         return self.model.get_model()
 
 
-def random_brain_object():
+def random_brain_object(num_minutes=5):
     import string
     fs = 512
-    n_samples = fs * 10 * 60
+    n_samples = fs * num_minutes* 60
     n_elecs = 5
     elec_coords = ['x', 'y', 'z']
     elec_names = list(string.ascii_lowercase)[:n_elecs]

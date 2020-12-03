@@ -6,3 +6,6 @@
 
 # package
 *.egg-info
+
+# temp files
+.out/*
