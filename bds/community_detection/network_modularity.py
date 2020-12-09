@@ -51,8 +51,7 @@ DIR_SUPEREEG = '/userdata/kscangos/Subnets/Signals/SuperEEG'
 DIR_BO = '/userdata/kscangos/Subnets/Signals/SuperEEG/brainobjects_sampled_all_2h_fixed_newpts'
 DIR_MODULARITY = '/userdata/kscangos/Subnets/Signals/SuperEEG/modularity'
 DF_DEPR = pd.read_table('/home/kscangos/Sandbox/full_patient_list_ankit')
-DF_FULL = pd.read_csv(
-    '/home/kscangos/Sandbox/full_patient_list_pd_feb.csv', index_col=0)
+DF_FULL = pd.read_csv('/home/kscangos/Sandbox/full_patient_list_pd_feb.csv', index_col=0)
 
 
 def _partition_model(model_path, gamma, cache_path):

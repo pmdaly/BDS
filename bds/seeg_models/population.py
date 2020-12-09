@@ -30,5 +30,8 @@ class Population(SEEGBase):
         if os.path.isfile(pop_fn) and not overwrite: return
         self.model.save(pop_fn)
 
+    def build_mdd_and_control_models():
+        pass
+
     def __getitem__(self, idx):
         return self.patients[idx]
