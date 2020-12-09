@@ -3,6 +3,7 @@ import pandas as pd
 import supereeg as se
 from .seeg import SEEGBase
 
+
 class Population(SEEGBase):
 
     def __init__(self, patients):
